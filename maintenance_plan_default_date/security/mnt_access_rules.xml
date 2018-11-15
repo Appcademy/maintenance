@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <record model="ir.rule" id="model_maint_equipment_employee_rule">
+    <field name="name">Dipendenti accedono alle attrezzature (equipment) del proprio reparto</field>
+    <field name="model_id" ref="maintenance.model_maintenance_equipment"/>
+    <field name="domain_force">[('department_id.id','in',[user.employee_ids.department_id.id])]</field>
+    <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+    <field name="perm_read" eval="True"/>
+    <field name="perm_create" eval="False"/>
+    <field name="perm_unlink" eval="False"/>
+    <field name="perm_write" eval="False"/>
+</record>
+
+</odoo>
