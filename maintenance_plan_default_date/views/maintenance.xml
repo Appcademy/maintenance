@@ -47,6 +47,30 @@
         <!-- <field name="context">{'group_by':['partner_id','product_tmpl_id','colore']}</field> -->
         <field name="target">current</field>
       </record>
+      
+      <record model="ir.ui.view" id="equipment_extended_view_filter">
+      	<field name="model">maintenance.equipment</field>
+      	<field name="inherit_id" ref="maintenance.hr_equipment_view_search"></field>
+      	<field name="arch" type="xml">
+      		<xpath expr="//search//field[@name='name']" position="before">
+					<field name="serial_no"/>
+      		</xpath>
+      	</field>
+      </record>
+      
+      <record model="ir.ui.view" id="request_extended_view_filter">
+      	<field name="model">maintenance.request</field>
+      	<field name="inherit_id" ref="maintenance.hr_equipment_request_view_search"></field>
+      	<field name="arch" type="xml">
+      		<search>
+      			<group>
+      				<filter string="Equipment" domain="[]" context="{'group_by': 'equipment_id'}" />
+      				<filter string="Maintenance type" domain="[]" context="{'group_by': 'maintenance_type'}" />
+      				<filter string="Maintenance kind" domain="[]" context="{'group_by': 'maintenance_kind_id'}" />
+      			</group>
+      		</search>
+      	</field>
+      </record>
 
   <!--    <record model="ir.ui.view" id="equipment_extended_make_mr_box_button">
         <field name="name">maintenance.equipment.checklist_box</field>
