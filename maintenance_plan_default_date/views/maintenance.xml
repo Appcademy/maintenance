@@ -39,11 +39,11 @@
         </field>
       </record>
 
-      <record model="ir.actions.act_window" id="equipment_extended_make_mr">
+      <record model="ir.actions.act_window" id="add_maintenance_request">
         <field name="name">Crea richiesta manutenzione</field>
         <field name="res_model">maintenance.request</field>
         <field name="view_mode">form</field>
-        <field name="domain">[('active_id','=',active_id)]</field>
+        <!-- <field name="domain">[('active_id','=',active_id)]</field> -->
         <!-- <field name="context">{'group_by':['partner_id','product_tmpl_id','colore']}</field> -->
         <field name="target">current</field>
       </record>
@@ -54,6 +54,17 @@
       	<field name="arch" type="xml">
       		<xpath expr="//search//field[@name='name']" position="before">
 					<field name="serial_no"/>
+      		</xpath>
+      	</field>
+      </record>
+      
+      <record model="ir.ui.view" id="equipment_extended_view">
+      	<field name="model">maintenance.equipment</field>
+      	<field name="inherit_id" ref="maintenance.hr_equipment_view_form"></field>
+      	<field name="arch" type="xml">
+      		<xpath expr="//div//button[@name='162']" position="before">
+					<button name="add_maintenance_request" type="action" 
+      					string="Add Request" class="oe_stat_button" icon="fa-plus"/>
       		</xpath>
       	</field>
       </record>
