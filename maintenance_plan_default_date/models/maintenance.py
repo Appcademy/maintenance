@@ -22,17 +22,19 @@ class MaintenanceRequest(models.Model):
     outcome = fields.Selection([
                                    ('c','Conforme'),
                                    ('nc','Non Conforme'),
-                                   ('w','Conforme con riserva')
+                                   ('w','Conforme con riserva'),
+                                   ('o', 'Fuori servizio')
                                    ],
                                'Esito'
                                )
     equipment_serial_no = fields.Char(string='Numero inventario',
                                      compute='_compute_equip_serial_no')
     maintenance_type = fields.Selection([
-                                            ('corrective', 'Corrective'), 
+                                            ('corrective', 'Corrective'),
                                             ('preventive', 'Preventive'),
                                             ('commissioning', 'Commissioning'),
-                                            ('scrap', 'Scrap')],
+                                            ('scrap', 'Scrap')
+                                        ],
                                         string='Maintenance Type',
                                         default="corrective")
 
