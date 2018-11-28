@@ -21,7 +21,7 @@
         <field name="next_action_date"
           options='{"bg_color": "rgba(0,180,0,.3);rgba(180,180,0,.3):maintenance_approaching &lt; 30;rgba(180,0,0,.3):maintenance_approaching &lt; 0;rgba(0,0,0,.3):maintenance_approaching == -1000;"}'/>
           <field name="last_date"
-            options='{"bg_color": "rgba(0,180,0,.3);rgba(180,180,0,.3):last_outcome == &apos;w&apos;;rgba(180,0,0,.3):last_outcome == &apos;nc&apos;;rgba(0,0,0,1):last_outcome == &apos;o&apos;;rgba(0,0,0,.3):last_outcome == False;","color":"white:last_outcome == &apos;o&apos;;"}'/>
+            options='{"bg_color": "rgba(0,180,0,.3);rgba(180,180,0,.3):last_outcome == &apos;w&apos;;rgba(180,0,0,.3):last_outcome == &apos;nc&apos;;rgba(0,0,0,.3):last_outcome == False;"}'/>
             <field name="maintenance_approaching" invisible="1"/>
             <field name="last_outcome" invisible="1"/>
           </field>
@@ -39,15 +39,19 @@
         </field>
       </record>
 
-      <record model="ir.actions.act_window" id="add_maintenance_request">
+      <record id="add_maintenance_request" model="ir.actions.act_window">
         <field name="name">Crea richiesta manutenzione</field>
+        <field name="type">ir.actions.act_window</field>
         <field name="res_model">maintenance.request</field>
         <field name="view_mode">form</field>
+        <field name="view_id" ref="maintenance.hr_equipment_request_view_form"/>
+        <field name="view_type">form</field>
         <!-- <field name="domain">[('active_id','=',active_id)]</field> -->
-        <!-- <field name="context">{'group_by':['partner_id','product_tmpl_id','colore']}</field> -->
-        <field name="target">current</field>
+        <field name="context">{
+            'default_equipment_id': active_id,
+        }</field>
       </record>
-
+      
       <record model="ir.ui.view" id="equipment_extended_view_filter">
       	<field name="model">maintenance.equipment</field>
       	<field name="inherit_id" ref="maintenance.hr_equipment_view_search"></field>
@@ -63,12 +67,12 @@
       	<field name="inherit_id" ref="maintenance.hr_equipment_view_form"></field>
       	<field name="arch" type="xml">
       		<xpath expr="//div//button[@name='162']" position="before">
-					<button name="add_maintenance_request" type="action" 
-      					string="Add Request" class="oe_stat_button" icon="fa-plus"/>
+					<button name="%(add_maintenance_request)d" type="action" 
+      					string="Add Request" class="oe_stat_button" icon="fa-plus" />
       		</xpath>
       	</field>
       </record>
-
+      
       <record model="ir.ui.view" id="request_extended_view_filter">
       	<field name="model">maintenance.request</field>
       	<field name="inherit_id" ref="maintenance.hr_equipment_request_view_search"></field>
