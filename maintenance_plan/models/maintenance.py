@@ -67,9 +67,9 @@ class MaintenancePlan(models.Model):
                 ('stage_id.done', '=', True),
                 ('close_date', '!=', False)], order="close_date desc", limit=1)
             if next_maintenance_todo and last_maintenance_done:
-                next_date = next_maintenance_todo.request_date
+                next_date = next_maintenance_todo.schedule_date
                 date_gap = fields.Date.from_string(
-                    next_maintenance_todo.request_date) - \
+                    next_maintenance_todo.schedule_date) - \
                     fields.Date.from_string(last_maintenance_done.close_date)
                 # If the gap between the last_maintenance_done and the
                 # next_maintenance_todo one is bigger than 2 times the period
@@ -78,7 +78,7 @@ class MaintenancePlan(models.Model):
                 # request from a manually one created
                 if date_gap > max(timedelta(0), period_timedelta * 2) \
                         and fields.Date.from_string(
-                            next_maintenance_todo.request_date) > today_date:
+                            next_maintenance_todo.schedule_date) > today_date:
                     # If the new date still in the past, we set it for today
                     if fields.Date.from_string(
                             last_maintenance_done.close_date) + \
@@ -90,9 +90,9 @@ class MaintenancePlan(models.Model):
                                 last_maintenance_done.close_date) +
                             period_timedelta)
             elif next_maintenance_todo:
-                next_date = next_maintenance_todo.request_date
+                next_date = next_maintenance_todo.schedule_date
                 date_gap = fields.Date.from_string(
-                    next_maintenance_todo.request_date) - today_date
+                    next_maintenance_todo.schedule_date) - today_date
                 # If next maintenance to do is in the future, and in more than
                 # 2 times the period, we insert an new request
                 # We use 2 times the period to avoid creation too closed
@@ -159,7 +159,7 @@ class MaintenanceEquipment(models.Model):
         return {
             'name': _('Preventive Maintenance (%s) - %s') % (
                 maintenance_plan.maintenance_kind_id.name, self.name),
-            'request_date': maintenance_plan.next_maintenance_date,
+            # 'request_date': maintenance_plan.next_maintenance_date,
             'schedule_date': maintenance_plan.next_maintenance_date,
             'category_id': self.category_id.id,
             'equipment_id': self.id,

@@ -9,7 +9,6 @@ from odoo.exceptions import UserError
 
 
 class MaintenanceKindExtend(models.Model):
-
     _inherit = 'maintenance.kind'
 
     default_period = fields.Integer(string="Default period",
@@ -25,7 +24,7 @@ class MaintenanceRequest(models.Model):
                                    ('w','Conforme con riserva'),
                                    ('o', 'Fuori servizio')
                                    ],
-                               'Esito'
+                               string='Esito'
                                )
     equipment_serial_no = fields.Char(string='Numero inventario',
                                      compute='_compute_equip_serial_no')
@@ -33,7 +32,8 @@ class MaintenanceRequest(models.Model):
                                             ('corrective', 'Corrective'),
                                             ('preventive', 'Preventive'),
                                             ('commissioning', 'Commissioning'),
-                                            ('scrap', 'Scrap')
+                                            ('scrap', 'Scrap'),
+                                            ('supply', 'Supply')
                                         ],
                                         string='Maintenance Type',
                                         default="corrective")
@@ -45,12 +45,11 @@ class MaintenanceRequest(models.Model):
             request.equipment_serial_no = request.equipment_id.serial_no
 
 class MaintenancePlan(models.Model):
-
     _inherit = 'maintenance.plan'
 
     period = fields.Integer(string='Period',
                             help='Days between each maintenance',
-                            compute="_compute_default_period")
+                            default=365)
 
     @api.depends('maintenance_kind_id.default_period')
     def _compute_default_period(self):
@@ -58,7 +57,6 @@ class MaintenancePlan(models.Model):
            plan.period = plan.maintenance_kind_id.default_period
 
 class MaintenanceEquipment(models.Model):
-
     _inherit = 'maintenance.equipment'
 
     maintenance_approaching = fields.Integer(string='Next Mainenance Approaching',
@@ -72,7 +70,7 @@ class MaintenanceEquipment(models.Model):
     last_date = fields.Date(string='Data ultima manutenzione',
                                 compute='_compute_maintenance_outcome')
 
-    @api.depends('maintenance_ids.outcome')
+    @api.depends('maintenance_ids')
     def _compute_maintenance_outcome(self):
         for equipment in self:
             last_maintenance = self.env['maintenance.request'].search([
