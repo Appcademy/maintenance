@@ -1,0 +1,91 @@
+<odoo>
+  <record id="paperformat_lowmargin" model="report.paperformat">
+  <field name="name">European A3 Horizontal</field>
+  <field name="default" eval="True" />
+  <field name="format">A3</field>
+  <field name="page_height">0</field>
+  <field name="page_width">0</field>
+  <field name="orientation">Landscape</field>
+  <field name="margin_top">40</field>
+  <field name="margin_bottom">28</field>
+  <field name="margin_left">4</field>
+  <field name="margin_right">4</field>
+  <field name="header_line" eval="False" />
+  <field name="header_spacing">35</field>
+  <field name="dpi">90</field>
+</record>
+
+  <report
+    id="maintenance_rep_order_equipments_my_repo"
+    model="maintenance.equipment"
+    string="Manutenzione appecchiature elettromedicali"
+    report_type="qweb-html"
+    name="maintenance_rep_order.equipments_my_repo"
+    paperformat="maintenance_rep_order.paperformat_lowmargin"/>
+
+    <template id="maintenance_rep_order.equipments_my_repo">
+      <t t-call="web.html_container">
+        <!-- IDS: <span t-esc="doc_ids"/><br/> -->
+        <t t-call="web.external_layout">
+          <div class="page">
+          <div class="oe_structure"/>
+            <h2>Manutenzione apparecchiature elettromedicali</h2>
+            <table class="table table-bordered table-condensed" style="table-layout:auto;">
+              <thead>
+                <tr>
+                  <th>Inventario</th>
+                  <th>Apparecchio</th>
+                  <th>Produttore</th>
+                  <th>Modello</th>
+                  <th>Matricola</th>
+                  <th>Ubicazione</th>
+                  <th>Stanza</th>
+                  <th style="background-color: rgba(180,0,0,.3)">Prox VEL</th>
+                  <th style="background-color: rgba(180,0,0,.3)">Prox VF</th>
+                  <th style="background-color: rgba(180,0,0,.3)">Prox MP</th>
+                  <th style="background-color: rgba(0,180,0,.3)">Ultima Ver. Elettrica</th>
+                  <th style="background-color: rgba(0,180,0,.3)">Esito</th>
+                  <th style="background-color: rgba(180,180,0,.3)">Ultima Ver. Funzionale</th>
+                  <th style="background-color: rgba(180,180,0,.3)">Esito</th>
+                  <th style="background-color: rgba(0,180,180,.3)">Ultima Manut. preventiva</th>
+                  <th style="background-color: rgba(0,180,180,.3)">Esito</th>
+                </tr>
+              </thead>
+              <tbody >
+                <t t-foreach="docs" t-as="o">
+                  <t t-if="o" t-call="maintenance_rep_order.equipments_my_repo_document"/>
+                </t>
+              </tbody>
+<!--               <tfoot>
+                <tr>
+                  <th class="text-right">Total count</th>
+                </tr>
+              </tfoot> -->
+              </table>
+          </div>
+        </t>
+      </t>
+    </template>
+    <template id="maintenance_rep_order.equipments_my_repo_document">
+
+      <tr class="sale_tbody">
+        <td ><span t-field="o.serial_no"/></td>
+        <td ><span t-field="o.name"/></td>
+        <td ><span t-field="o.partner_id.name"/></td>
+        <td ><span t-field="o.model"/></td>
+        <td ><span t-field="o.partner_ref"/></td>
+        <td ><span t-field="o.department_id.name"/></td>
+        <td ><span t-field="o.location"/></td>
+        <td ><span t-field="o.nved"/></td>
+        <td ><span t-field="o.nvfd"/></td>
+        <td ><span t-field="o.nmpd"/></td>
+        <td ><span t-field="o.vecd"/></td>
+        <td ><span t-field="o.veoc"/></td>
+        <td ><span t-field="o.vfcd"/></td>
+        <td ><span t-field="o.vfoc"/></td>
+        <td ><span t-field="o.mpcd"/></td>
+        <td ><span t-field="o.mpoc"/></td>
+      </tr>
+    </template>
+
+  </odoo>

@@ -1,0 +1,57 @@
+<odoo>
+
+
+  <report
+    id="maintenance_rep_order_inventory_my_repo"
+    model="maintenance.equipment"
+    string="Inventario appecchiature elettromedicali"
+    report_type="qweb-html"
+    name="maintenance_rep_order.inventory_my_repo"/>
+
+    <template id="maintenance_rep_order.inventory_my_repo">
+      <t t-call="web.html_container">
+        <!-- IDS: <span t-esc="doc_ids"/><br/> -->
+        <t t-call="web.external_layout">
+          <div class="page">
+          <div class="oe_structure"/>
+            <h2>Inventario apparecchiature eletromedicali</h2>
+            <table class="table table-bordered table-condensed" style="table-layout:auto;">
+              <thead>
+                <tr>
+                  <th>Inventario</th>
+                  <th>Apparecchio</th>
+                  <th>Produttore</th>
+                  <th>Modello</th>
+                  <th>Matricola</th>
+                  <th>Ubicazione</th>
+                  <th>Stanza</th>
+                </tr>
+              </thead>
+              <tbody >
+                <t t-foreach="docs" t-as="o">
+                  <t t-if="o" t-call="maintenance_rep_order.inventory_my_repo_document"/>
+                </t>
+              </tbody>
+<!--               <tfoot>
+                <tr>
+                  <th class="text-right">Total count</th>
+                </tr>
+              </tfoot> -->
+              </table>
+          </div>
+        </t>
+      </t>
+    </template>
+    <template id="maintenance_rep_order.inventory_my_repo_document">
+      <tr class="sale_tbody">
+        <td ><span t-field="o.serial_no"/></td>
+        <td ><span t-field="o.name"/></td>
+        <td ><span t-field="o.partner_id.name"/></td>
+        <td ><span t-field="o.model"/></td>
+        <td ><span t-field="o.partner_ref"/></td>
+        <td ><span t-field="o.department_id.name"/></td>
+        <td ><span t-field="o.location"/></td>
+      </tr>
+    </template>
+
+  </odoo>

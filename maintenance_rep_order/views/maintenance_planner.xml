@@ -1,0 +1,73 @@
+<odoo>
+  <record id="paperformat_lowmargin" model="report.paperformat">
+  <field name="name">European A3 Horizontal</field>
+  <field name="default" eval="True" />
+  <field name="format">A3</field>
+  <field name="page_height">0</field>
+  <field name="page_width">0</field>
+  <field name="orientation">Landscape</field>
+  <field name="margin_top">40</field>
+  <field name="margin_bottom">28</field>
+  <field name="margin_left">4</field>
+  <field name="margin_right">4</field>
+  <field name="header_line" eval="False" />
+  <field name="header_spacing">35</field>
+  <field name="dpi">90</field>
+</record>
+
+  <report
+    id="maintenance_rep_order_equipments_planner"
+    model="maintenance.equipment"
+    string="Planner interventi manutentivi"
+    report_type="qweb-html"
+    name="maintenance_rep_order.equipments_planner"
+    paperformat="maintenance_rep_order.paperformat_lowmargin"/>
+
+    <template id="maintenance_rep_order.equipments_planner">
+      <t t-call="web.html_container">
+        <!-- IDS: <span t-esc="doc_ids"/><br/> -->
+        <t t-call="web.external_layout">
+          <div class="page">
+          <div class="oe_structure"/>
+            <h2>Planner interventi manutentivi</h2>
+            <table class="table table-bordered table-condensed" style="table-layout:auto;">
+              <thead>
+                <tr>
+                  <th>Inventario</th>
+                  <th>Apparecchio</th>
+                  <th>Matricola Produttore</th>
+                  <th>Ubicazione</th>
+                  <th>Stanza</th>
+                  <th>Prossima Verifica</th>
+                  <th colspan="4">Note</th>
+                </tr>
+              </thead>
+              <tbody >
+                <t t-foreach="docs" t-as="o">
+                  <t t-if="o" t-call="maintenance_rep_order.equipments_planner_row"/>
+                </t>
+              </tbody>
+<!--               <tfoot>
+                <tr>
+                  <th class="text-right">Total count</th>
+                </tr>
+              </tfoot> -->
+              </table>
+          </div>
+        </t>
+      </t>
+    </template>
+    <template id="maintenance_rep_order.equipments_planner_row">
+
+      <tr class="sale_tbody">
+        <td ><span t-field="o.serial_no"/></td>
+        <td ><span t-field="o.name"/></td>
+        <td ><span t-field="o.partner_ref"/></td>
+        <td ><span t-field="o.department_id.name"/></td>
+        <td ><span t-field="o.location"/></td>
+        <td ><span t-field="o.next_action_date"/></td>
+        <td colspan="4"></td>
+      </tr>
+    </template>
+
+  </odoo>
